@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-loadbalancer
+  namespace: service
+spec:
+  selector:
+    matchLabels:
+      app: my-app-loadbalancer
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: my-app-loadbalancer
+    spec:
+      containers:
+      - name: my-app-loadbalancer
+        image: httpd
+        volumeMounts:
+        - name: volume-index
+          mountPath: /usr/local/apache2/htdocs/
+      - name: create-index-file
+        image: alpine
+        command: ["sh", "-c","cd /usr/local/apache2/htdocs/; echo '<html><body><h1>' > index.html;  echo Pod ID: $MY_POD_NAME >> index.html; echo '</h1></body></html>'  >> index.html; sleep 50d"]
+        env:
+          - name: MY_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+        volumeMounts:
+        - name: volume-index
+          mountPath: /usr/local/apache2/htdocs/
+      volumes:
+        - name: volume-index
+          emptyDir: {}

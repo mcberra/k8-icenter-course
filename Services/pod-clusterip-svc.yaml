@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-clusterip
+  namespace: service
+spec:
+  selector:
+    matchLabels:
+      app: my-app-clusterip
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: my-app-clusterip
+    spec:
+      initContainers:
+      - name: index-editting
+        image: alpine
+        command: ["sh","-c","cd /usr/local/apache2/htdocs/; echo '<html><body><h1>' > index.html;  echo 'Configuracion del servicio del tipo: [ ClusterIP ] exitosa!' >> index.html; echo '</h1></body></html>'  >> index.html"]
+        volumeMounts:
+        - name: volume-index
+          mountPath: /usr/local/apache2/htdocs/
+      containers:
+      - name: my-app-clusterip
+        image: httpd
+        volumeMounts:
+        - name: volume-index
+          mountPath: /usr/local/apache2/htdocs/
+      volumes:
+        - name: volume-index
+          emptyDir: {}
