@@ -16,10 +16,10 @@ spec:
       containers:
       - name: deployment-namespace-request-limits
         image: nginx
-      resources:
-        limits:
-          memory: "800Mi"
-          cpu: "800m"
-        requests:
-          memory: "600Mi"
-          cpu: "400m"
+        resources:
+          limits:
+            memory: "800Mi"
+            cpu: "800m"
+          requests:
+            memory: "600Mi"
+            cpu: "400m"
