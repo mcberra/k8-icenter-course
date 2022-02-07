@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-namespace-request-limits
+  namespace: resources
+spec:
+  selector:
+    matchLabels:
+      app: deployment-namespace-request-limits
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: deployment-namespace-request-limits
+    spec:
+      containers:
+      - name: deployment-namespace-request-limits
+        image: nginx
+        resources:
+          limits:
+            memory: "800Mi"
+            cpu: "800m"
+          requests:
+            memory: "600Mi"
+            cpu: "400m"
