@@ -29,3 +29,20 @@ spec:
       volumes:
         - name: volume-index
           emptyDir: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodeport-svc
+  namespace: service
+  labels:
+    app: my-app-nodeport
+spec:
+  selector:
+    app: my-app-nodeport
+  ports:
+    - port: 80
+      targetPort: 80
+  type: NodePort

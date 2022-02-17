@@ -29,3 +29,19 @@ spec:
       volumes:
         - name: volume-index
           emptyDir: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: clusterip-svc
+  namespace: service
+  labels:
+    app: my-app-clusterip
+spec:
+  selector:
+    app: my-app-clusterip
+  ports:
+    - port: 80
+      targetPort: 80

@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    startup: probe
+  name: startup-command-pod
+  namespace: probes
+spec:
+  containers:
+  - name: startup
+    image: mcr.microsoft.com/azuredocs/aci-helloworld
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "node /usr/src/app/index.js & (sleep 120; touch /tmp/alive); sed -i '16d' /usr/src/app/index.html; sed -i '16i <h1>The startup probe has passed the check successfully</h1>' /usr/src/app/index.html; wait "
+    livenessProbe:
+      exec:
+        command:
+        - "cat"
+        - "/tmp/alive"
+      periodSeconds: 5
+    startupProbe:
+      exec:
+        command:
+        - "cat"
+        - "/tmp/alive"
+      failureThreshold: 30
+      periodSeconds: 10
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: startup-svc
+  namespace: probes
+  labels:
+    startup: probe
+spec:
+  selector:
+    startup: probe
+  ports:
+    - protocol: TCP
+      port: 80
+  type: LoadBalancer

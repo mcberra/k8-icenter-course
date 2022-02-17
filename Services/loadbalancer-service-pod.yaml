@@ -33,3 +33,20 @@ spec:
       volumes:
         - name: volume-index
           emptyDir: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: loadbalancer-svc
+  namespace: service
+  labels:
+    app: my-app-loadbalancer
+spec:
+  selector:
+    app: my-app-loadbalancer
+  ports:
+    - port: 80
+      targetPort: 80
+  type: LoadBalancer
