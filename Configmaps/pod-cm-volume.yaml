@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-cm-volume
+  namespace: configmap
+spec:
+  containers:
+    - name: volume-cm-pod
+      image: nginx
+      volumeMounts:
+      - name: config-volume
+        mountPath: /etc/cm
+      - name: config-volume2
+        mountPath: /etc/cm2
+  volumes:
+    - name: config-volume
+      configMap:
+        name: game-config
+    - name: config-volume2
+      configMap:
+        name: game-env-file.properties

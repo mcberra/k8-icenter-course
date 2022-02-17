@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-envfrom
+  namespace: configmap
+spec:
+  containers:
+    - name: pod-envfrom
+      image: nginx
+      envFrom:
+      - configMapRef:
+          name: ui-env-file.properties
