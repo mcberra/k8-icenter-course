@@ -1,0 +1,3 @@
+status=ok
+diskpressure=false
+memorypressure=true
