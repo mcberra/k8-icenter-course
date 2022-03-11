@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: practica-liveness-http-pod
+  labels:
+    live: probe
+spec:
+  containers:
+  - name: liveness-http
+    image: mcr.microsoft.com/azuredocs/aci-helloworld
+    command:
+      - "sh"
+      - "-c"
+      - "node /usr/src/app/index.js & (sleep 120; rm /usr/src/app/index.html);"

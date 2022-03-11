@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    startup: probe
+  name: practica-startup-command-pod
+spec:
+  containers:
+  - name: startup
+    image: mcr.microsoft.com/azuredocs/aci-helloworld
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "node /usr/src/app/index.js & (sleep 180; touch /tmp/alive); wait"
+
